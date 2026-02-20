@@ -5,7 +5,7 @@ Detta är en omfattande sammanställning av material från högskoleutbildningen
 ### Innehåll 
 Materialet är uppdelat: 
 - [Kursvis](Kurser/) 
-- [Alla föreläsningar samlade i en PDF](https://drive.google.com/file/d/167KDugKXEN2_q16CUlFbdmktRGWsCJHu/view?usp=drive_link)       (pga stor fil måste den laddas ner från min Google Drive)
+- [Alla föreläsningar samlade i en PDF](https://drive.google.com/file/d/167KDugKXEN2_q16CUlFbdmktRGWsCJHu/view?usp=drive_link) > (på grund av stor fil måste den laddas ner från min Google Drive)
 <br><br>
 
 Denna repon täcker en blandning av nedanstående punkter: 
