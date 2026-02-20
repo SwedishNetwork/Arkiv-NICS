@@ -36,7 +36,7 @@ HT 2023:
 
 VT 2024:
 - ✅ Systemadministration - Linux
-- 🚫 (Ekonomi och entreprenörskap)
+- 🚫 Ekonomi och entreprenörskap
 - ✅ Systemadministration - Windows
 - ✅ Nätverksdesign - WAN och operatörsnät
 
@@ -46,18 +46,18 @@ HT 2024:
 - ✅ Nätverkssäkerhet
 - ✅ Nätverksdesign - Trådlösa nätverk
 - ✅ Systemadministration - Virtualisering och molntjänster
-- ✅ (Skriptprogrammering)
+- ✅ Skriptprogrammering
 
 VT 2025:
 - 🚫 Forskningsmetoder i datateknik och informatik
 - ✅ Cybersäkerhet
-- 🚫 (NFK - Näringslivsförlagd kurs inom NICS)
+- 🚫 NFK - Näringslivsförlagd kurs inom NICS
 
 ### Årskurs 3:
 
 HT 2025: 
-- 🚫 (Projektledning och metoder)
-- 🚫 (Individuellt kursval)
+- 🚫 Projektledning och metoder
+- 🚫 Individuellt kursval
 - 🚫 Trender i NICS
 - ✅ IT-arkitektur och IT Service Management (ITSM)
 
