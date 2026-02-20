@@ -24,7 +24,6 @@ Den kursvisa uppdelningen täcker en blandning av nedanstående punkter:
 > Information kan vara utdaterad.
 
 <br><br>
-
 ## Utbildningens kurser 
 ✅ = Inkluderas | 🚫 = Inkluderas ej 
 
