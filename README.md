@@ -4,9 +4,8 @@ Detta är en omfattande sammanställning av material från högskoleutbildningen
 
 ### Innehåll 
 Materialet är uppdelat: 
-Kursvis --> [Kurser](Kurser/) 
-och 
-Alla utbildningens föreläsningar samlade i en och samma PDF --> 
+Kursvis: [Kurser](Kurser/) <br><br> 
+Alla föreläsningar samlade i en PDF: 
 
 Denna repon täcker en blandning av nedanstående punkter: 
 - Föreläsningar
