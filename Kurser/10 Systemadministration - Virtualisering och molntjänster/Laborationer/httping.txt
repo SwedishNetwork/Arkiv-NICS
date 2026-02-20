@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+# check if dependencies are installed
+DEPENDENCIES='curl'
+for CMD in $DEPENDENCIES; do
+	if ! command -v "$CMD" > /dev/null; then
+		printf 'Missing dependency: %s\n' "$CMD"
+		printf 'Must have all of the following installed: %s\n' "$DEPENDENCIES"
+		exit 1
+	fi
+done
+
+# handle flags and provide usage information
+for ARG in "$@"; do
+	case $ARG in
+		-h|--help)
+			cat <<-END
+				Usage: httping {URL|-h|--help} [TIMEOUT]
+
+				Ping a website with a HEAD request every TIMEOUT seconds. If the website does 
+				not respond within TIMEOUT (i.e. is unreachable) you will see response code 000.
+
+				 Arguments:
+				     URL      The URL to 'ping' (must begin with http:// or https://)
+				     -h       Shows this help message
+				     --help   Shows this help message
+				     TIMEOUT  The timeout for each 'ping' request (default: 1 second)
+
+				 Output format:
+				     redir    Redirect URL if present in response
+				     cert     Certificate verification status (0=valid, 0<invalid)
+				     size     Request size in bytes
+				     time     Complete round-trip time in seconds
+				     [msg]    Error messages are shown in brackets if present
+
+				  Examples:
+				     httping http://example.net/
+				     httping https://example.net/
+
+			END
+			exit 0
+			;;
+		-*)
+			printf 'Got invalid flag\n'
+			exit 2
+			;;
+	esac
+done
+
+# check number of arguments
+if ! [ "$#" -eq 1 ] && ! [ "$#" -eq 2 ]; then
+	printf 'Got too many arguments\n'
+	exit 2
+fi
+
+# check if first argument is a URL
+if echo "$1" | grep -qv '^https\?://'; then
+	printf 'No valid URL found, use format http://example.net/ or https://example.net/\n'
+	exit 2
+else
+	URL="$1"
+fi
+
+# check if second argument (timeout) is an int or float
+if [ -z "${2:-}" ]; then
+	TIMEOUT="1"
+elif echo "$2" | grep -qvE '^[0-9]+(\.[0-9]+)?$'; then
+	printf 'Incorret timeout value, must be int or float\n'
+	exit 2
+else
+	TIMEOUT="$2"
+fi
+
+# ping $URL with a HEAD request every 1x-2x $TIMEOUT seconds
+FORMAT='%{response_code} from %{url} (%{remote_ip}): redir=%{redirect_url} cert=%{ssl_verify_result} size=%{size_request} time=%{time_total}%{onerror} [%{errormsg}]'
+trap 'exit 0' INT TERM
+printf 'HEAD %s\n' "$URL"
+while true; do
+	curl --head --insecure --silent --max-time "$TIMEOUT" --fail --output /dev/null --write-out "$FORMAT" "$URL" || true
+	printf '\n'
+	sleep "$TIMEOUT"
+done
+
