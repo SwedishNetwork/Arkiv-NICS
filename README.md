@@ -17,7 +17,7 @@ Den kursvisa uppdelningen täcker en blandning av nedanstående punkter:
 <br><br>
 
 > [!NOTE]
-> Utbildningens alla föreläsningar samlade i en PDF medför möjligheten att göra uppslag med **```Ctrl + F```** för att snabbt hitta information.
+> Utbildningens alla föreläsningar samlade i en PDF möjliggör uppslag med **```Ctrl + F```** för att snabbt hitta information.
 
 > Information förekommer både på svenska och engelska.  
 > Information kan vara utdaterad.
