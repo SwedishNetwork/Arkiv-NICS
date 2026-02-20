@@ -5,7 +5,7 @@ Detta är en omfattande sammanställning av material från högskoleutbildningen
 ### Innehåll 
 Materialet är uppdelat: 
 - [Kursvis](Kurser/) 
-- [Alla föreläsningar samlade i en PDF]
+- [Alla föreläsningar samlade i en PDF](https://drive.google.com/file/d/167KDugKXEN2_q16CUlFbdmktRGWsCJHu/view?usp=drive_link)
 <br><br>
 
 Denna repon täcker en blandning av nedanstående punkter: 
