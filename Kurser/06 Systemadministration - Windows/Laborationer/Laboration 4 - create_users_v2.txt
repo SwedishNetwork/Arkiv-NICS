@@ -1,0 +1,106 @@
+!!! ÄNDRA FILÄNDELSE TILL -> .ps1 FÖRE ANVÄNDNING I LABB4 !!!
+
+# Function for generating user passwords
+Function Generate-Password {
+    $r1 = Get-Random -Maximum 10
+    $r2 = Get-Random -Maximum 10
+    $r3 = Get-Random -Maximum 30
+    $r4 = Get-Random -Maximum 10
+    $r5 = Get-Random -Maximum 30
+    $r6 = Get-Random -Maximum 10
+
+    $t1 = @("Blue","Red","Green","Silver","Purple","Golden","Pink","Brown","White","Black")
+    $t2 = @("Ocean","Fire","Lake","River","Grass","Bird","Tiger","Fish","Thunder","Car","Hammer")
+    $t3 = @("3","22","33","55","33","55","76","55","23","78","54","23","45","77","88","33","23","99","89","76","55","34","12","34","12","34","23","44","999","888")
+    $t4 = @("UK","BR","CH","US","TW","KK","ZE","AU","PK","RX")
+    $t6 = @("$","#","@","!","%","+","&","%%","@@","##")
+
+    $pw1 = $t1[$r1]
+    $pw2 = $t2[$r2]
+    $pw3 = $t3[$r3]
+    $pw4 = $t4[$r4]
+    $pw5 = $t3[$r5]
+    $pw6 = $t6[$r6]
+
+    Return $pw3+$pw1+$pw2+$pw5+$pw4+$pw6
+}
+
+# Function to make swedish names safe
+Function Remove-Diacritics {
+    Param (
+        [String]$sToModify = [String]::Empty
+    )
+
+    ForEach ($s in $sToModify) {
+        # Param may be a string or a list of strings
+        If ($sToModify -eq $null) { Return [string]::Empty }
+        $sNormalized = $sToModify.Normalize("FormD")
+
+        ForEach ($c in [Char[]]$sNormalized) {
+            $uCategory = [System.Globalization.CharUnicodeInfo]::GetUnicodeCategory($c)
+            If ($uCategory -ne "NonSpacingMark") { $res += $c }
+        }
+
+        Return $res
+    }
+}
+
+# Get AD root domain
+$ad_info   = Get-ADDomain
+$ad_forest = $ad_info.Forest
+$ad_root   = $ad_info.DistinguishedName
+
+# Create OUs in domain
+New-ADOrganizationalUnit -Name "Identity Assets"  -Path $ad_root
+New-ADOrganizationalUnit -Name "Servers"          -Path "OU=Identity Assets,${ad_root}"
+New-ADOrganizationalUnit -Name "Service Accounts" -Path "OU=Identity Assets,${ad_root}"
+
+New-ADOrganizationalUnit -Name "Application Assets" -Path $ad_root
+New-ADOrganizationalUnit -Name "Servers"            -Path "OU=Application Assets,${ad_root}"
+New-ADOrganizationalUnit -Name "Service Accounts"   -Path "OU=Application Assets,${ad_root}"
+
+New-ADOrganizationalUnit -Name "User Assets" -Path $ad_root
+New-ADOrganizationalUnit -Name "Computers"   -Path "OU=User Assets,${ad_root}"
+New-ADOrganizationalUnit -Name "Users"       -Path "OU=User Assets,${ad_root}"
+
+# Create users
+$users = (Invoke-RestMethod -Uri "https://api.namnapi.se/v2/names.json?limit=200").names
+$info  = @{}
+ForEach ($user in $users)
+{
+    $user_first = $user.firstname
+    $user_sur   = $user.surname
+
+    $user_first_safe = Remove-Diacritics $user_first
+    $user_sur_safe   = Remove-Diacritics $user_sur
+
+    # Generate password for user
+    $password        = Generate-Password
+    $secure_password = ConvertTo-SecureString $password -AsPlainText -Force
+
+    # Generate AD user properties
+    $properties = @{
+        "GivenName"             = $user_first
+        "Surname"               = $user_sur
+        "Name"                  = "${user_first} ${user_sur}"
+        "DisplayName"           = "${user_first} ${user_sur}"
+        "SAMAccountName"        = "${user_sur_safe}${user_first_safe}"
+        "UserPrincipalName"     = "${user_sur_safe}${user_first_safe}@${ad_forest}"
+        "AccountPassword"       = $secure_password
+        "Enabled"               = $True
+        "ChangePasswordAtLogon" = $False
+        "Path"                  = "OU=Users,OU=User Assets,${ad_root}"
+    }
+
+    # Create user
+    New-ADUser @properties
+
+    # Add user info to info table
+    $info.add("${user_sur_safe}${user_first_safe}@${ad_forest}", $password)
+}
+
+# Print user info
+ConvertTo-Json `
+  ($info.GetEnumerator() `
+  | Sort-Object -Property Name `
+  | Select-Object -Property Name,Value)
