@@ -13,12 +13,14 @@ Denna repon täcker en blandning av nedanstående punkter:
 - Laborationer
 - Kurslitteratur
 - Praktiska Prov
+<br><br>
 
 > [!NOTE]
 > Syftet med ... är att kunna använda den som ett kunskapsbibliotek och göra uppslag med **```Ctrl + F```** för att snabbt hitta information.
 
 > Information förekommer både på svenska och engelska.  
-> Information kan vara utdaterad. 
+> Information kan vara utdaterad.
+<br><br>
 
 ## Utbildningens kurser 
 ✅ = Inkluderas | 🚫 = Inkluderas ej 
