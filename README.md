@@ -6,7 +6,7 @@ Detta är en omfattande sammanställning av material från högskoleutbildningen
 
 ##  Innehåll: 
 ### 🔗 [Alla föreläsningar samlade i en PDF](https://drive.google.com/file/d/167KDugKXEN2_q16CUlFbdmktRGWsCJHu/view?usp=drive_link) 🔗
-> Filstorleken gör att den måste laddas ner från min Google Drive (det är inget farligt, jag lovar  ![smile](https://github.com/user-attachments/assets/85c51110-8206-438a-b322-c3ceebb0f9b2) )
+> Filstorleken gör att den måste laddas ner från min Google Drive (kanske förekommer virusvarning - det är inget virus  ![smile](https://github.com/user-attachments/assets/85c51110-8206-438a-b322-c3ceebb0f9b2) )
 
 ### 📚 [Kursvis](Kurser/) 📚
 
