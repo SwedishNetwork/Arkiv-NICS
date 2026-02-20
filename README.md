@@ -3,10 +3,12 @@
 Detta är en omfattande sammanställning av material från högskoleutbildningen **Nätverk, Infrastruktur & Cybersäkerhet (NICS)**. Närmare bestämt en 3-årig utbildningsperiod på lärosätet Jönköping University, startår 2023 (Klass DD23). 
 
 ### Innehåll 
-För att skapa tydliga förklaringar rörande samtliga koncept, modeller, protokoll, standarder, metoder och best-practices som tagits upp under utbildningens gång täcker denna guide en blandning av: 
+Materiealet är uppdelat kursvis i en filstruktur samtidigt som alla utbildningens föreläsningar är samlade i en och samma PDF.
+Denna repon täcker en blandning av nedanstående punkter: 
 - Föreläsningar
+- Laborationer
 - Kurslitteratur
-- Figurer
+- Praktiska Prov
 
 > [!NOTE]
 > Syftet med denna guide är att kunna använda den som ett kunskapsbibliotek och göra uppslag med **```Ctrl + F```** för att snabbt hitta eftersökt/behövd information.
