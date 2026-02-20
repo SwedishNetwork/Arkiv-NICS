@@ -4,8 +4,8 @@ Detta är en omfattande sammanställning av material från högskoleutbildningen
 
 ### Innehåll 
 Materialet är uppdelat: 
-- [Alla föreläsningar samlade i en PDF](https://drive.google.com/file/d/167KDugKXEN2_q16CUlFbdmktRGWsCJHu/view?usp=drive_link)🔗 > ```Filstorleken gör att den måste laddas ner från min Google Drive```
-- [Kursvis - Gå till "Kurser"](Kurser/) 
+- [Alla föreläsningar samlade i en PDF](https://drive.google.com/file/d/167KDugKXEN2_q16CUlFbdmktRGWsCJHu/view?usp=drive_link) > ```Filstorleken gör att den måste laddas ner från min Google Drive```
+- [Kursvis](Kurser/) 
 <br><br>
 
 Denna repon täcker en blandning av nedanstående punkter: 
@@ -16,7 +16,7 @@ Denna repon täcker en blandning av nedanstående punkter:
 <br><br>
 
 > [!NOTE]
-> Syftet med ... är att kunna använda den som ett kunskapsbibliotek och göra uppslag med **```Ctrl + F```** för att snabbt hitta information.
+> Utbildningens alla föreläsningar samlade i en PDF medför möjligheten att göra uppslag med **```Ctrl + F```** för att snabbt hitta information.
 
 > Information förekommer både på svenska och engelska.  
 > Information kan vara utdaterad.
