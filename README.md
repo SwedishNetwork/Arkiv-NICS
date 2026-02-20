@@ -5,7 +5,8 @@ Detta är en omfattande sammanställning av material från högskoleutbildningen
 ### Innehåll 
 Materialet är uppdelat: 
 - [Kursvis](Kurser/) 
-- [Alla föreläsningar samlade i en PDF] 
+- [Alla föreläsningar samlade i en PDF]
+<br><br>
 
 Denna repon täcker en blandning av nedanstående punkter: 
 - Föreläsningar
@@ -14,7 +15,7 @@ Denna repon täcker en blandning av nedanstående punkter:
 - Praktiska Prov
 
 > [!NOTE]
-> Syftet med denna guide är att kunna använda den som ett kunskapsbibliotek och göra uppslag med **```Ctrl + F```** för att snabbt hitta eftersökt/behövd information.
+> Syftet med ... är att kunna använda den som ett kunskapsbibliotek och göra uppslag med **```Ctrl + F```** för att snabbt hitta information.
 
 > Information förekommer både på svenska och engelska.  
 > Information kan vara utdaterad. 
