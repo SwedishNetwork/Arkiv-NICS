@@ -1,3 +1,6 @@
+# Read me ![aga](https://github.com/user-attachments/assets/057c84ab-229f-45b4-97f5-da3ac09d2d9b)
+
+
 Detta är en omfattande sammanställning av material från högskoleutbildningen **Nätverk, Infrastruktur & Cybersäkerhet (NICS)**. Närmare bestämt en 3-årig utbildningsperiod på lärosätet Jönköping University, startår 2023 (Klass DD23). 
 <br><br>
 
