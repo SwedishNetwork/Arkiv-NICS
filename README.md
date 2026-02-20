@@ -22,6 +22,8 @@ Den kursvisa uppdelningen täcker en blandning av nedanstående punkter:
 > Information förekommer både på svenska och engelska.  
 > Information kan vara utdaterad.
 
+<br><br>
+
 ## Utbildningens kurser 
 ✅ = Inkluderas | 🚫 = Inkluderas ej 
 
