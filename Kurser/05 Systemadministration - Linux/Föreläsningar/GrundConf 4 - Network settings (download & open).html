@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <title>4. Network Settings</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style>
+      h1 {
+        text-align: center;
+      }
+      body {
+        font-family: Open Sans, sans-serif;
+      }
+      pre {
+        font-family: DejaVu Sans Mono, monospace;
+        font-size: 16px;
+        white-space: pre;
+        display: block;
+        overflow-x: auto;
+        padding: 1em;
+        background: #F3F3F3;
+        color: #454545;
+      }
+      #AlpineSettingsLabel:checked ~ .AlpineSettings,
+      #DebianSettingsLabel:checked ~ .DebianSettings,
+      #RHELSettingsLabel:checked ~ .RHELSettings,
+      #SLESSettingsLabel:checked ~ .SLESSettings {
+        display: block;
+      }
+      #AlpineRootLabel:checked ~ .AlpineRoot,
+      #DebianRootLabel:checked ~ .DebianRoot,
+      #RHELRootLabel:checked ~ .RHELRoot,
+      #SLESRootLabel:checked ~ .SLESRoot {
+        display: block;
+      }
+      #AlpineDisableLabel:checked ~ .AlpineDisable,
+      #DebianDisableLabel:checked ~ .DebianDisable,
+      #RHELDisableLabel:checked ~ .RHELDisable,
+      #SLESDisableLabel:checked ~ .SLESDisable {
+        display: block;
+      }
+      #AlpineInterfaceLabel:checked ~ .AlpineInterface,
+      #DebianInterfaceLabel:checked ~ .DebianInterface,
+      #RHELInterfaceLabel:checked ~ .RHELInterface,
+      #SLESInterfaceLabel:checked ~ .SLESInterface {
+        display: block;
+      }
+      #AlpineNetworkLabel:checked ~ .AlpineNetwork,
+      #DebianNetworkLabel:checked ~ .DebianNetwork,
+      #RHELNetworkLabel:checked ~ .RHELNetwork,
+      #SLESNetworkLabel:checked ~ .SLESNetwork {
+        display: block;
+      }
+      input:checked + label {
+        font-weight: bold;
+        background-color: #E4E4E4;
+      }
+      label:hover {
+        background-color: #EEEEEE;
+      }
+      .default-padding {
+        padding: 0.4em;
+        cursor: pointer;
+      }
+      .hidden-element {
+        display: none;
+      }
+      .menubox {
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-top: 26px;
+        margin-bottom: 26px;
+        padding: 20px;
+        box-shadow:  0 0 5px 3px #D0D0D0;
+        border-radius: 6px;
+      }
+      .mainbox {
+        max-width: 900px;
+        margin: auto;
+        padding-bottom: 50px;
+      }
+      summary {
+        list-style: none;
+        border: 2px solid #000000;
+        padding: .75em 1em;
+        cursor: pointer;
+        position: relative;
+        padding-left: 3rem;
+        }
+      summary:before {
+        content: "↓";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: .75rem;
+        width: 1.75rem;
+        height: 1.75rem;
+        background-color: #000000;
+        color: #F0F0F0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+      details[open] summary {
+        background-color: #E4E4E4;
+      }
+      details[open] summary:before {
+        content: "↑";
+      }
+      summary:hover {
+        background-color: #EEEEEE;
+      }
+      details div {
+        border-left: 2px solid #000;
+        border-right: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 0.1em 1em 0.1em;
+        margin: 0px 10px 0px;
+      }
+      details + details {
+        margin-top: .5rem;
+      }
+      .end {
+        padding-bottom: 100px
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainbox">
+      <h1>Grundkonfiguration i Linux </h1>
+      <p>Det finns ett enklare sätt att ställa in nästverksinställningar,
+        under installationen kan man nämligen smidigt ange IP-adress, nätmak och gateway som senare kommer att användas.
+        Behöver du däremot ändra nätverksinställningar efter installationen så är det tyvärr inte lika smidigt.
+        Instruktionerna nedan guidar dig igenom hur man gör.</p>
+      <p>Observera att instruktionerna antar att du kan köra kommandon som root med hjälp utav sudo eller doas.
+        Det vill säga att du har genomfört del 2 av guiden.</p>
+
+      <h1>4. Network Settings</h1>
+      <h2>Interfaces</h2>
+      <p>För att kunna ändra nätverksinställningar behöver man först ta reda på vilket eller vilka interface man har och vad de heter.
+        Tidigare namngavs interface i den ordning de initierades vid uppstart, enligt den så kallade 'original simple scheme'.
+        Interface namngavs då med ett löpnummer enligt: "eth0", "eth1" och så vidare.
+        Denna namngivning har dock ersatts och idag  används istället 'predictable names scheme', där interface namnges utifrån sin hårdvaruadress (t.ex. baserat på PCIe- eller USB-bussadress).</p>
+      <p>Även om 'original simple scheme' har ersatts finns det fortfarande fall där namngivningen inte har uppdaterats.
+        Till exempel använder vissa virtuella nätverkskort fortfarande denna namnstandard, det blir dock alltmer ovanligt.</p>
+      <div class="menubox">
+        <input type="radio" id="AlpineInterfaceLabel" name="Interface" class="hidden-element" checked>
+        <label for="AlpineInterfaceLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianInterfaceLabel" name="Interface" class="hidden-element">
+        <label for="DebianInterfaceLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESInterfaceLabel" name="Interface" class="hidden-element">
+        <label for="SLESInterfaceLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELInterfaceLabel" name="Interface" class="hidden-element">
+        <label for="RHELInterfaceLabel" class="default-padding">RHEL</label>
+        <div class="AlpineInterface hidden-element">
+          <p>Du kan visa dina interface samt nuvarande nätverksinställningar med nedan kommandon.</p>
+          <pre>
+user$ ifconfig
+user$ route</pre>
+        </div>
+        <div class="DebianInterface hidden-element">
+          <p>Du kan visa dina interface samt nuvarande nätverksinställningar med nedan kommandon.</p>
+          <pre>
+user$ ip address
+user$ ip route</pre>
+        </div>
+        <div class="SLESInterface hidden-element">
+          <p>Du kan visa dina interface samt nuvarande nätverksinställningar med nedan kommandon.</p>
+          <pre>
+user$ ip address
+user$ ip route</pre>
+        </div>
+        <div class="RHELInterface hidden-element">
+          <p>Du kan visa dina interface samt nuvarande nätverksinställningar med nedan kommandon.</p>
+          <pre>
+user$ nmcli
+user$ ip address
+user$ ip route</pre>
+        </div>
+      </div>
+      <p>Du kan läsa mer om namnändringen här:
+        <a href="https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/">https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/</a>
+        och här: <a href="https://wiki.debian.org/NetworkInterfaceNames">https://wiki.debian.org/NetworkInterfaceNames</a>.</p>
+      <h2>Nätverksinställningar</h2>
+      <p>När du har tagit reda på vad ditt/dina nätverskinterface heter är du nu redo att gå vidare.
+        Observera att exempeln nedan antar att det interface du konfigurerar heter "enp0s3".</p>
+      <div class="menubox">
+        <input type="radio" id="AlpineNetworkLabel" name="Network" class="hidden-element" checked>
+        <label for="AlpineNetworkLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianNetworkLabel" name="Network" class="hidden-element">
+        <label for="DebianNetworkLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESNetworkLabel" name="Network" class="hidden-element">
+        <label for="SLESNetworkLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELNetworkLabel" name="Network" class="hidden-element">
+        <label for="RHELNetworkLabel" class="default-padding">RHEL</label>
+        <div class="AlpineNetwork hidden-element">
+          <p>Den officiella dokumentationen för Alpines nätverkskonfiguration hittar du här:
+            <a href="https://wiki.alpinelinux.org/wiki/Configure_Networking">https://wiki.alpinelinux.org/wiki/Configure_Networking</a>.
+            I manuallen finns det även ännu mer detaljerad information.</p>
+	  <pre>
+man interfaces
+man resolv.conf</pre>
+	  <p>Instruktionerna nedan bör dock vara tillräckliga för de flesta scenarion.</p>
+	  <details><summary>/etc/network/interfaces</summary><div>
+	  <p>Alpine hanterar nätverksinställningar i filen "/etc/network/interfaces".</p>
+          <pre>user$ doas nano /etc/network/interfaces</pre>
+	  <p>Innehållet i filen bör liknande nedan om du ska konfigurera statiskt adresserad dual-stack.</p>
+          <pre>
+auto lo
+iface lo inet loopback
+
+auto enp0s3
+iface enp0s3 inet static
+  address 192.0.2.10/24
+  gateway 192.0.2.1
+
+iface enp0s3 inet6 static
+  address 2001:db8:0:2::10/64
+  gateway 2001:db8:0:2::1</pre>
+	  <p>För att applicera nätverksinställningarna behöver nätverkstjänsten startas om.
+            Det är sedan lämpligt att kontrollera om inställningarna applicerades korrekt.</p>
+	  <pre>
+user$ doas rc-service networking restart
+user$ rc-service networking status
+user$ ifconfig
+user$ route</pre>
+	  </div></details>
+	  <details><summary>/etc/resolv.conf</summary><div>
+	  <p>DNS-servrar och DNS-suffix konfigureras i filen "/etc/resolv.conf".</p> 
+          <pre>
+user$ doas nano /etc/resolv.conf</pre>
+	  <p>Gentoo har tydlig och koncis dokumentation för konfigurationsfilen: 
+            <a href="https://wiki.gentoo.org/wiki/Resolv.conf#Configuration">https://wiki.gentoo.org/wiki/Resolv.conf#Configuration</a>.</p>
+          <p>När du anger ett DNS-suffix med "search" (samt eventuellt med "domain" för bakåtkompatabilitet) ska du välja ett lokalt domännamn (se RFC 8375 och RFC 6762 appendix G).
+            Förutsatt att du inte har en existerande DNS-infrasturkur, i sådana fall bör domännamnet matcha denna.</p>
+          <pre>
+search nics.lan
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+nameserver 2606:4700:4700::1111
+nameserver 2606:4700:4700::1001</pre>
+	  </div></details>
+	  <details><summary>/etc/hosts</summary><div>
+	  <p>Om du använder statisk adresser behöver "/etc/hosts"-filen uppdateras med adressändringen.
+            Filen behöver även uppdateras om du bytt DNS-suffix.</p>
+          <pre>user$ doas nano /etc/hosts</pre>
+	  <p>Observera att exemplet nedan använder "linux" som hostname och "nics.lan" som DNS-suffix.</p>
+          <pre>
+127.0.0.1        linux.nics.lan linux localhost.localdomain localhost
+::1              localhost localhost.localdomain
+192.0.2.10       linux.nics.lan linux
+2001:db8:0:2::10 linux.nics.lan linux</pre>
+          <p>Du kan dubbelkolla att ditt FQDN applicerades korrekt med nedan kommando.</p>
+          <pre>user$ hostname -f</pre>
+	  </div></details>
+        </div>
+        <div class="DebianNetwork hidden-element">
+          <p>Den officiella dokumentationen för Debians nätverkskonfiguration hittar du här:
+            <a href="https://wiki.debian.org/NetworkConfiguration">https://wiki.debian.org/NetworkConfiguration</a>.
+            I manuallen finns det även ännu mer detaljerad information.
+	  <pre>
+man interfaces
+man resolv.conf</pre>
+	  <p>Instruktionerna nedan bör dock vara tillräckliga för de flesta scenarion.</p>
+	  <details><summary>/etc/network/interfaces</summary><div>
+	  <p>Debian hanterar IP-inställningar i filen "/etc/network/interfaces".</p>
+          <pre>user$ sudoedit /etc/network/interfaces</pre>
+          <p>Innehållet i filen bör liknande nedan om du ska konfigurera statiskt adresserad dual-stack.</p>
+          <pre>
+auto lo
+iface lo inet loopback
+
+auto enp0s3
+iface enp0s3 inet static
+  address 192.0.2.10/24
+  gateway 192.0.2.1
+
+iface enp0s3 inet6 static
+  address 2001:db8:0:2::10/64
+  gateway 2001:db8:0:2::1</pre>
+	  <p>För att sedan applicera nätverksinställningarna behöver man ta bort existerande inställningar och sedan applicera de nya.
+            Om du tidigare har använt dynamisk adressering kan "ifdown" eventuellt generera en varning om att ditt interface inte har någon konfiguration, vilket i sådana fall kan ignoreras.</p>
+          <pre>
+user$ sudo ifdown enp0s3 && sudo ifup enp0s3
+user$ ip address
+user$ ip route</pre>
+	  </div></details>
+	  <details><summary>/etc/resolv.conf</summary><div>
+	  <p>DNS-servrar och DNS-suffix konfigureras i filen "/etc/resolv.conf".</p> 
+          <pre>
+user$ sudoedit /etc/resolv.conf</pre>
+	  <p>Gentoo har tydlig och koncis dokumentation för konfigurationsfilen: 
+            <a href="https://wiki.gentoo.org/wiki/Resolv.conf#Configuration">https://wiki.gentoo.org/wiki/Resolv.conf#Configuration</a>.</p>
+          <p>När du anger ett DNS-suffix med "search" (samt eventuellt med "domain" för bakåtkompatabilitet) ska du välja ett lokalt domännamn (se RFC 8375 och RFC 6762 appendix G).
+            Förutsatt att du inte har en existerande DNS-infrasturkur, i sådana fall bör domännamnet matcha denna.</p>
+          <pre>
+search nics.lan
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+nameserver 2606:4700:4700::1111
+nameserver 2606:4700:4700::1001</pre>
+	  </div></details>
+	  <details><summary>/etc/hosts</summary><div>
+          <p>Om du använder statisk adresser behöver även "/etc/hosts"-filen uppdateras med adressändringen.
+            Har du tidigare använt dynamiska adressering behöver du ersätta "127.0.1.1" med de statiska adresserna.
+            Har du även bytt DNS-suffix behöver FQDN uppdateras.</p>
+          <pre>user$ sudoedit /etc/hosts</pre>
+	  <p>Observera att exemplet nedan använder "linux" som hostname och "nics.lan" som DNS-suffix.</p>
+          <pre>
+127.0.0.1        localhost
+192.0.2.10       linux.nics.lan linux
+2001:db8:0:2::10 linux.nics.lan linux
+::1              localhost ip6-localhost ip6-loopback
+ff02::1          ip6-allnodes
+ff02::2          ip6-allrouters</pre>
+          <p>Du kan dubbelkolla att ditt FQDN applicerades korrekt med nedan kommando.</p>
+          <pre>user$ hostname -f</pre>
+	  </div></details>
+        </div>
+        <div class="SLESNetwork hidden-element">
+          <p>SUSE använder sig utav Wicked för att hantera nätverkskonfiguration från och med SLE 12 (samt motsvarande openSUSE versioner).
+            Det tidigare ifcfg-formatet används dock fortfarnde för att konfigurera Wicked.
+            Du kan läsa mer om nätverkshantering med Wicked här:
+            <a href="https://documentation.suse.com/external-tree/en-us/sles/12-SP4/networking_with_wicked_in_suse_linux_enterprise_12_guide.pdf">https://documentation.suse.com/external-tree/en-us/sles/12-SP4/networking_with_wicked_in_suse_linux_enterprise_12_guide.pdf</a>,
+            samt allmänt om nätverkskonfiguration i SUSE här: <a href="https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-network.html#sec-network-manconf">https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-network.html#sec-network-manconf</a>.
+            I manuallen finns det även ännu mer detaljerad information.</p>
+          <pre>
+user$ apropos wicked ifcfg netconfig
+user$ man 5 ifcfg</pre>
+          <p>Instruktionerna nedan bör dock vara tillräckliga för de flesta scenarion.</p>
+	  <details><summary>/etc/sysconfig/network/ifcfg-*</summary><div>
+            <p>Varje interface har en ifcfg-konfigurationsfil under katalogen "/etc/sysconfig/network".</p>
+            <pre>user$ sudoedit /etc/sysconfig/network/ifcfg-enp0s3</pre>
+            <p>SUSE kommer med en detaljerad exempel-template för ifcfg-konfigurationsfiler.</p>
+            <pre>user$ less /etc/sysconfig/network/ifcfg.template</pre>
+            <p>Innehållet i filen bör dock liknande nedan om du ska konfigurera statiskt adresserad dual-stack.</p>
+            <pre>
+STARTMODE=hotplug
+BOOTPROTO=static
+IPADDR1=192.0.2.10/24
+IPADDR2=2001:db8:0:2::10/64
+ZONE=public</pre>
+          </div></details>
+	  <details><summary>/etc/sysconfig/network/routes</summary><div>
+            <p>Statisk routing hanteras i en separat fil.</p>
+            <pre>user$ sudoedit /etc/sysconfig/network/routes</pre>
+            <p>Skapa filen om den inte finns. I filen ska routes till alla nätverk som är directly connected samt en default gateway defineras.
+              Använd nedan konfiguationsutdrag som referens.</p>
+            <pre>
+# Destionation          Gateway                 Deprecated      Interface
+127.0.0.0/8             -                       -               lo
+192.0.2.0/24            -                       -               enp0s3 
+2001:db8:0:2::/64       -                       -               enp0s3 
+default                 192.0.2.1               -               enp0s3</pre>
+        </div></details>
+	<details><summary>/etc/sysconfig/network/config</summary><div>
+          <p>DNS-servrar hanteras utav netconfig (via Wicked) och konfigureras i den globala nätverkskonfigurationsfilen.
+            Börja med att ta en backup-kopia på standardkonfigurationen utifall att du behöver återgå till denna.</p>
+          <pre>
+user$ sudo cp /etc/sysconfig/network/config /etc/sysconfig/network/config.default
+user$ sudoedit /etc/sysconfig/network/config</pre>
+          <p>För att konfigurera DNS-inställningar behöver du justera nedan värden.</p>
+        <pre>
+NETCONFIG_DNS_STATIC_SEARCHLIST="nics.lan"
+NETCONFIG_DNS_STATIC_SERVERS="1.1.1.1 1.0.0.1 606:4700:4700::1111 2606:4700:4700::1001"</pre>
+        </div></details>
+	<details><summary>Applicera</summary><div>
+          <p>För att sedan applicera nätverksinställningarna behöver man ta bort existerande inställningar och sedan applicera de nya.
+            Observera att i nedan exempel konfigurerades interface "enp0s3".</p>
+          <pre>user$ sudo wicked ifdown enp0s3 && sudo wicked ifup enp0s3</pre>
+        </div></details>
+	<details><summary>/etc/hosts</summary><div>
+          <p>Om du använder statisk adresser behöver "/etc/hosts"-filen uppdateras med adressändringen.
+            Filen behöver även uppdateras om du bytt DNS-suffix.</p>
+          <pre>user$ sudoedit /etc/hosts</pre>
+          <p>Observera att exemplet nedan använder "linux" som hostname och "nics.lan" som DNS-suffix.</p>
+          <pre>
+192.0.2.10       linux.nics.lan linux
+2001:db8:0:2::10 linux.nics.lan linux
+127.0.0.1        localhost
+::1              localhost ipv6-localhost ipv6-loopback
+fe00::0          ipv6-localnet
+ff00::0          ipv6-mcastprefix
+ff02::1          ipv6-allnodes
+ff02::2          ipv6-allrouters
+ff02::3          ipv6-allhosts</pre>
+          <p>Du kan dubbelkolla att ditt FQDN applicerades korrekt med nedan kommando.</p>
+          <pre>user$ hostname -f</pre>
+        </div></details>
+        </div>
+        <div class="RHELNetwork hidden-element">
+          <p>Red Hat använder sig utav Network Manager för att hantera nätverksinställningar.
+            Tidigare har ifcfg-filer använts för nätverkskonfiguration men dessa har fasats ut med RHEL 9 (du kan läsa mer om detta här: <a href="https://www.redhat.com/en/blog/rhel-9-networking-say-goodbye-ifcfg-files-and-hello-keyfiles">https://www.redhat.com/en/blog/rhel-9-networking-say-goodbye-ifcfg-files-and-hello-keyfiles</a>).
+            Numera har varje interface en konfigurationsfil under katalogen "/etc/NetworkManager/system-connections" där både IP- och DNS-inställningar hanteras.</p>
+          <p>Den officiella dokumentation för nätverkskonfiguration med Network Manager är relativt teknisk då verktyget är både kraftfullt och komplext
+            (<a href="https://networkmanager.dev/docs/api/latest/nm-settings-keyfile.html">https://networkmanager.dev/docs/api/latest/nm-settings-keyfile.html</a>
+            och <a href="https://networkmanager.dev/docs/api/latest/">https://networkmanager.dev/docs/api/latest/</a>).
+            För att se samtliga möjliga inställningar visas det enklast med nedan kommando (avsluta med "q").</p>
+	  <pre>nmcli connection show enp0s3</pre>
+	  <p>Instruktionerna nedan bör dock vara tillräckliga för de flesta scenarion.</p>
+
+	  <details><summary>/etc/NetworkManager/system-connections/</summary><div>
+	  <p>Börja med att ta en backup-kopia på standardkonfigurationen utifall att du behöver återgå till denna.
+            Observera att exemplen nedan konfigurerar "enp0s3", ditt interface kan mycket väl heta något annat.</p>
+          <pre>
+user$ sudo cp /etc/NetworkManager/system-connections/enp0s3.nmconnection /etc/NetworkManager/system-connections/enp0s3.nmconnection.default 
+user$ sudoedit /etc/NetworkManager/system-connections/enp0s3.nmconnection</pre>
+	  <p>För att konfigurerar statiskt adresserad dual-stack, samt DNS-servrar och DNS-suffix bör innehållet i filen likna nedan. Standardkonfigurationen bör annars behållas som den är.</p>
+          <p>När du anger ett DNS-suffix med "dns-search" ska du välja ett lokalt domännamn (se RFC 8375 och RFC 6762 appendix G).
+            Förutsatt att du inte har en existerande DNS-infrasturkur, i sådana fall bör domännamnet matcha denna.</p>
+          <pre>
+[ipv4]
+method=manual
+address1=192.0.2.10/24
+gateway=192.0.2.1
+dns=1.1.1.1;1.0.0.1
+dns-search="nics.lan"
+
+[ipv6]
+method=manual
+address1=2001:db8:0:2::10/64
+gateway=2001:db8:0:2::1
+dns=2606:4700:4700::1111;2606:4700:4700::1001
+dns-search="nics.lan"</pre>
+	  </div></details>
+	  <details><summary>nmcli</summary><div>
+          <p>För att applicera konfigurationen behöver du be Network Manager att läsa in konfigurationsfilerna på nytt,
+	    samt stänga ner och starta upp berörda interface.</p>
+          <pre>
+user$ sudo nmcli connection reload
+user$ sudo nmcli connection down enp0s3 && sudo nmcli connection up enp0s3
+user$ nmcli
+user$ ip address
+user$ ip route</pre>
+	  </div></details>
+	  <details><summary>/etc/hosts</summary><div>
+	  <p>Om du använder statisk adresser behöver "/etc/hosts"-filen uppdateras med adressändringen.
+            Filen behöver även uppdateras om du bytt DNS-suffix.</p>
+          <pre>user$ sudoedit /etc/hosts</pre>
+	  <p>Observera att exemplet nedan använder "linux" som hostname och "nics.lan" som DNS-suffix.</p>
+          <pre>
+127.0.0.1        localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1              localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.0.2.10       linux.nics.lan linux
+2001:db8:0:2::10 linux.nics.lan linux</pre>
+          <p>Du kan dubbelkolla att ditt FQDN applicerades korrekt med nedan kommando.</p>
+          <pre>user$ hostname -f</pre>
+	  </div></details>
+        </div>
+      </div>
+      <p>Kontrollera att nätverksinställningarna verkligen stämmer innan du går vidare.</p>
+      <pre>user$ ping google.com</pre>
+    </div>
+  </body>
+</html>

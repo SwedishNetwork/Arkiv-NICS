@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <title>1. Preparation</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style>
+      h1 {
+        text-align: center;
+      }
+      body {
+        font-family: Open Sans, sans-serif;
+      }
+      pre {
+        font-family: DejaVu Sans Mono, monospace;
+        font-size: 16px;
+        white-space: pre;
+        display: block;
+        overflow-x: auto;
+        padding: 1em;
+        background: #F3F3F3;
+        color: #454545;
+      }
+      #AlpineIPLabel:checked ~ .AlpineIP,
+      #DebianIPLabel:checked ~ .DebianIP,
+      #RHELIPLabel:checked ~ .RHELIP,
+      #SLESIPLabel:checked ~ .SLESIP {
+        display: block;
+      }
+      #WindowsFingerprintLabel:checked ~ .WindowsFingerprint,
+      #LinuxFingerprintLabel:checked ~ .LinuxFingerprint {
+        display: block;
+      }
+      input:checked + label {
+        font-weight: bold;
+        background-color: #E4E4E4;
+      }
+      label:hover {
+        background-color: #EEEEEE;
+      }
+      .default-padding {
+        padding: 0.4em;
+        cursor: pointer;
+      }
+      .hidden-element {
+        display: none;
+      }
+      .menubox {
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-top: 26px;
+        margin-bottom: 26px;
+        padding: 20px;
+        box-shadow:  0 0 5px 3px #D0D0D0;
+        border-radius: 6px;
+      }
+      .mainbox {
+        max-width: 900px;
+        margin: auto;
+        padding-bottom: 50px;
+      }
+      summary {
+        list-style: none;
+        border: 2px solid #000000;
+        padding: .75em 1em;
+        cursor: pointer;
+        position: relative;
+        padding-left: 3rem;
+        }
+      summary:before {
+        content: "↓";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: .75rem;
+        width: 1.75rem;
+        height: 1.75rem;
+        background-color: #000000;
+        color: #F0F0F0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+      details[open] summary {
+        background-color: #E4E4E4;
+      }
+      details[open] summary:before {
+        content: "↑";
+      }
+      summary:hover {
+        background-color: #EEEEEE;
+      }
+      details div {
+        border-left: 2px solid #000;
+        border-right: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 0.1em 1em 0.1em;
+        margin: 0px 10px 0px;
+      }
+      details + details {
+        margin-top: .5rem;
+      }
+      .end {
+        padding-bottom: 100px
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainbox">
+      <h1>Grundkonfiguration i Linux </h1>
+      <p>Linux terminalen är ganska begränsad jämfört med SSH,
+        med en SSH-anslutning kan man bland annat scrolla, klippa och klistra.
+        Det är mycket ovanligt att man använder något annat SSH för att administrera en Linux-server.
+        För att undvika att lära ut ovanor ska vi bara köra två kommandon ifrån terminalen inann vi ansluter.</p>
+      <p>Instruktioner nedan antar att du har skapat en användare under installationen.
+        Det är denna användare du ska logga in som om inget annat sägs.</p>
+      <h1>1. Förberedelse</h1>
+      <h2>IP adress</h2>
+      <p>Logga in som din användare i terminalen.
+        För att ta reda på vilken IP-adress din maskin har behöver vi köra vårt första kommandot.</p>
+      <div class="menubox">
+        <input type="radio" id="AlpineIPLabel" name="IP" class="hidden-element" checked>
+        <label for="AlpineIPLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianIPLabel" name="IP" class="hidden-element">
+        <label for="DebianIPLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESIPLabel" name="IP" class="hidden-element">
+        <label for="SLESIPLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELIPLabel" name="IP" class="hidden-element">
+        <label for="RHELIPLabel" class="default-padding">RHEL</label>
+        <div class="AlpineIP hidden-element">
+          <pre>$ ifconfig</pre>
+        </div>
+        <div class="DebianIP hidden-element">
+          <pre>$ ip address</pre>
+        </div>
+        <div class="SLESIP hidden-element">
+          <pre>$ ip address</pre>
+        </div>
+        <div class="RHELIP hidden-element">
+          <pre>$ ip address</pre>
+        </div>
+      </div>
+
+      <p>IP-adressen kommer vara dynamisk utdelad med DHCP och kan därför komma att förändras.
+        Vi kommer att ändra nätverksinställningarna senare och då ange en statisk IP-adress,
+        så länge får vi använda den dynamiskt tilldelade adressen.</p>
+      <h2>SSH</h2>
+      <p>SSH är förinstallerat i Alpine, openSUSE och RHEL.
+        I Debian behöver du bocka i alternativet "SSH server" under installationen.</p>
+
+      <p>Öppna kommandotolken på din virtualiserings host och påbörja anslutningen till din Linux-maskin.
+        Notera att du blir tillfrågad huruvida du litar på enheten du ansluter till.
+        Som bevis för att enheten är den enhet den utger sig för att vara visas ett hash av en publik nyckel.
+        Ange "yes" på frågan, men avbryt anslutningen med CTRL-C och skriv inte in något lösenord än.</p>
+      <pre>
+C:\Users\Viktor> ssh nics@192.0.2.200
+The authenticity of host '192.0.2.200 (192.0.2.200)' can't be established.
+<font color=blue>ECDSA</font> key fingerprint is <font color=blue>SHA256</font>:<font color=orange>SLlJO1gftszHOPwFhiaiQwhDMrQbIsGVhAiHoYlNIvQ</font>.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? <font color=red>yes</font>
+Warning: Permanently added '172.23.121.200' (ECDSA) to the list of known hosts.
+nics@172.23.121.200's password: <font color=red>CTRL-C</font>
+C:\Users\Viktor> </pre>
+
+      <p>Innan vi matar in några inloggningsuppgifter ska vi nämligen först kontrollera att den publika nyckel finns på Linux-servern.
+      Annars skulle det antingen innebära att vi skrivit in fel IP-adress,
+      eller så försöker en MITM stjäla våra inloggningsuppgifter.</p>
+      <div class="menubox">
+        <input type="radio" id="WindowsFingerprintLabel" name="Fingerprint" class="hidden-element">
+        <label for="WindowsFingerprintLabel" class="default-padding">Windows</label>
+        <input type="radio" id="LinuxFingerprintLabel" name="Fingerprint" class="hidden-element">
+        <label for="LinuxFingerprintLabel" class="default-padding">Linux</label>
+        <div class="WindowsFingerprint hidden-element">
+          <p>Det går så klart att jämföra hashet manuellt tecken-för-tecken,
+            men det finns ett mycket enklare sätt där man istället jämför två bilder.
+            För att generera bilden ifrån klienten kör följande kommando.
+            Bilden kommer då skapas utifrån det hash vi fick vid första SSH-anslutningen.</p>
+<pre>
+C:\Users\Viktor> ssh-keygen -lvF 192.0.2.200
+# Host 192.0.2.200 found: line 1
+192.0.2.200 <font color=blue>ECDSA</font> <font color=blue>SHA256</font>:<font color=orange>SLlJO1gftszHOPwFhiaiQwhDMrQbIsGVhAiHoYlNIvQ</font>
++---[<font color=blue>ECDSA 256</font>]---+
+|O+=o.            |
+|BBo.   . .       |
+|=o.E. * = o      |
+|.... * & * .     |
+|=+. . * S o .    |
+|=.o.   . + -     |
+|o..       .      |
+|oo               |
+|o                |
++----[<font color=blue>SHA256</font>]-----+
+C:\Users\Viktor></pre>
+        </div>
+        <div class="LinuxFingerprint hidden-element">
+          <p>En SSH-server stödjer ofta flera asymmetrisk krypteringsalgorithmer och flera hashningsfunktioner.
+            Första steget är därför att kontrollera vilken av dessa algorithmer klienten har valt när den anslöt.
+            I detta exempel används ECDSA och SHA-256 (se första anslutningen ovan),
+            om din klient har valt något annat är det bara byta ut dessa i vårt andra kommando.</p>
+<pre>
+$ ssh-keygen -lvE sha256 -f /etc/ssh/ssh_host_ecdsa_key.pub
+256 <font color=blue>SHA256</font>:<font color=orange>SLlJO1gftszHOPwFhiaiQwhDMrQbIsGVhAiHoYlNIvQ</font> Linux (<font color=blue>ECDSA</font>)
++---[<font color=blue>ECDSA 256</font>]---+
+|O+=o.            |
+|BBo.   . .       |
+|=o.E. * = o      |
+|.... * & * .     |
+|=+. . * S o .    |
+|=.o.   . + -     |
+|o..       .      |
+|oo               |
+|o                |
++----[<font color=blue>SHA256</font>]-----+
+$ </pre>
+        </div>
+      </div>
+      <p>Validera serverns identitet genom att jämföra bilderna.
+        Förutsatt att bilderna är identiska kan du nu säkert ansluta till din Linux-server.
+        Notera att du inte längre får frågor om du litar på enheten.
+        I och med att vi tidigare svarade "yes" har hashet sparats och vi behöver inte längre jämföra några bilder.
+        Vid varje anlutning kommer klienten istället automatiskt jämföra det hash servern presenterar med det hash den har sparat.</p>
+<pre>
+C:\Users\Viktor> ssh nics@192.0.2.200
+nics@192.0.2.200's password:
+
+nics@linux$ </pre>
+
+      <h2>Root</h2>
+      <p>För att kunna utföra konfigurationsändringar krävs högre behörigheter än vad en vanlig användare normalt sätt har. 
+        Då vi för tillfället inte har något sätt att ge vanliga användare högre behörigheter
+        behöver du strax logga in som root.</p>
+      <p>Om du är osäker på vilken användare du är inloggad som finns det ett par sätt att kontrollera.
+        Dels kan man ofta se användarnamnet direkt i prompten,
+        och dels skiljer sig ofta root användarens prompt (typiskt "#" eller "%") gentemot vanliga användares (typiskt "$").
+        Prompten är dock inte den samma bland alla distributioner.
+        Det kan därför vara lämpligt att använda kommandot "whoami" om du vill dubbelkolla.</p>
+      <pre>
+nics@localhost:~$ whoami
+nics
+
+root@localhost:~# whoami
+root</pre>
+      <p>Som en extra försiktighetsåtgärd tillåts sällan root att ansluta med SSH.
+        Detta blir dock ett problem då vi som sagt behöver högre behörigeter för att utföra den initiala konfiguraitonen.
+        Lösningen är att ansluta med SSH som en vanlig användare och sedan använda substitute user för logga in som root.</p>
+      <pre>
+$ su -l root
+# whoami
+root</pre>
+      <p>Detta är så klart onödigt knöligt men vi kommer att implementera en bättre lösning senare.
+        Tills vidare används "#" i instruktionerna för att visa att du behöver vara inloggad som root för att köra kommandot.</p>
+
+      <h2>Alpine</h2>
+      <p>Alpine är en minimal Linux-distribution och kommer med mycket få förinstallerade paket.
+        För att underlätta din hantering av Alpine rekommenderas du starkt att installera textredigeraren nano samt lokal dokumentation innan du går vidare.</p>
+      <pre>root@alpine# apk add nano man-pages mandoc mandoc-apropos docs busybox-doc</pre>
+  </body>
+</html>

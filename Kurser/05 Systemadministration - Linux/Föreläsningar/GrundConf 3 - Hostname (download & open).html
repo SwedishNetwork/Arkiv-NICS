@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <title>3. Hostname</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style>
+      h1 {
+        text-align: center;
+      }
+      body {
+        font-family: Open Sans, sans-serif;
+      }
+      pre {
+        font-family: DejaVu Sans Mono, monospace;
+        font-size: 16px;
+        white-space: pre;
+        display: block;
+        overflow-x: auto;
+        padding: 1em;
+        background: #F3F3F3;
+        color: #454545;
+      }
+      #AlpineHostnameLabel:checked ~ .AlpineHostname,
+      #DebianHostnameLabel:checked ~ .DebianHostname,
+      #RHELHostnameLabel:checked ~ .RHELHostname,
+      #SLESHostnameLabel:checked ~ .SLESHostname {
+        display: block;
+      }
+      #AlpineHostsLabel:checked ~ .AlpineHosts,
+      #DebianHostsLabel:checked ~ .DebianHosts,
+      #RHELHostsLabel:checked ~ .RHELHosts,
+      #SLESHostsLabel:checked ~ .SLESHosts {
+        display: block;
+      }
+      #AlpineRebootLabel:checked ~ .AlpineReboot,
+      #DebianRebootLabel:checked ~ .DebianReboot,
+      #RHELRebootLabel:checked ~ .RHELReboot,
+      #SLESRebootLabel:checked ~ .SLESReboot {
+        display: block;
+      }
+      input:checked + label {
+        font-weight: bold;
+        background-color: #E4E4E4;
+      }
+      label:hover {
+        background-color: #EEEEEE;
+      }
+      .default-padding {
+        padding: 0.4em;
+        cursor: pointer;
+      }
+      .hidden-element {
+        display: none;
+      }
+      .menubox {
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-top: 26px;
+        margin-bottom: 26px;
+        padding: 20px;
+        box-shadow:  0 0 5px 3px #D0D0D0;
+        border-radius: 6px;
+      }
+      .mainbox {
+        max-width: 900px;
+        margin: auto;
+        padding-bottom: 50px;
+      }
+      summary {
+        list-style: none;
+        border: 2px solid #000000;
+        padding: .75em 1em;
+        cursor: pointer;
+        position: relative;
+        padding-left: 3rem;
+        }
+      summary:before {
+        content: "↓";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: .75rem;
+        width: 1.75rem;
+        height: 1.75rem;
+        background-color: #000000;
+        color: #F0F0F0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+      details[open] summary {
+        background-color: #E4E4E4;
+      }
+      details[open] summary:before {
+        content: "↑";
+      }
+      summary:hover {
+        background-color: #EEEEEE;
+      }
+      details div {
+        border-left: 2px solid #000;
+        border-right: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 0.1em 1em 0.1em;
+        margin: 0px 10px 0px;
+      }
+      details + details {
+        margin-top: .5rem;
+      }
+      .end {
+        padding-bottom: 100px
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainbox">
+      <h1>Grundkonfiguration i Linux </h1>
+      <p>Det finns ett enklare sätt att ställa in hostname,
+        under installationen kan man nämnligen smidigt ange det hostname som senare kommer att användas.
+        Behöver du däremot byta hostname därefter så är det tyvärr inte lika smidigt.
+        Instruktionerna nedan guidar dig igenom hur man gör.</p>
+      <p>Observera att instruktionerna antar att du kan köra kommandon som root med hjälp utav sudo eller doas.
+        Det vill säga att du har genomfört del 2 av guiden.</p>
+
+      <h1>3. Hostname</h1>
+      <p>Ett hostname är det namn som du döper din enhet till.
+        Ditt hostname bör inte innehålla några punkter, då punkter senare används för beskriva den domän enheten tillhör.</p>
+      <h2>Hostname</h2>
+      <div class="menubox">
+        <input type="radio" id="AlpineHostnameLabel" name="Hostname" class="hidden-element" checked>
+        <label for="AlpineHostnameLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianHostnameLabel" name="Hostname" class="hidden-element">
+        <label for="DebianHostnameLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESHostnameLabel" name="Hostname" class="hidden-element">
+        <label for="SLESHostnameLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELHostnameLabel" name="Hostname" class="hidden-element">
+        <label for="RHELHostnameLabel" class="default-padding">RHEL</label>
+        <div class="AlpineHostname hidden-element">
+	<p>För att kontrollera nuvarande hostname kan du använda följande kommando (det står även ofta utskrivet i prompten).</p>
+	<pre>user$ hostname</pre>
+	<p>För att kontrollera nuvarande hostname kan du använda följande kommandon (det står även ofta utskrivet i prompten).</p>
+        <pre>user$ doas nano /etc/hostname</pre>
+        <!-- hostname -F /etc/hostname -->
+	</div>
+        <div class="DebianHostname hidden-element">
+	<p>För att kontrollera nuvarande hostname kan du använda följande kommandon (det står även ofta utskrivet i prompten).</p>
+	<pre>
+user$ hostname
+user$ hostnamectl</pre>
+        <p>Det finns flera sätt att ändra hostname,
+          enklast är dock att ersätta ditt tidigare hostname med ett nytt i tillhörande konfigurationsfil.
+        </p>
+        <pre>user$ sudoedit /etc/hostname</pre>
+        <!-- hostname -F /etc/hostname -->
+	</div>
+        <div class="SLESHostname hidden-element">
+	<p>För att kontrollera nuvarande hostname kan du använda följande kommandon (det står även ofta utskrivet i prompten).</p>
+	<pre>
+user$ hostname
+user$ hostnamectl</pre>
+        <p>Det finns flera sätt att ändra hostname,
+          enklast är dock att ersätta ditt tidigare hostname med ett nytt i tillhörande konfigurationsfil.
+        </p>
+        <pre>user$ sudoedit /etc/hostname</pre>
+        <!-- hostname -F /etc/hostname -->
+	</div>
+        <div class="RHELHostname hidden-element">
+	<p>För att kontrollera nuvarande hostname kan du använda följande kommandon (det står även ofta utskrivet i prompten).</p>
+	<pre>
+user$ hostname
+user$ hostnamectl</pre>
+        <p>Det finns flera sätt att ändra hostname,
+          enklast är dock att ersätta ditt tidigare hostname med ett nytt i tillhörande konfigurationsfil.
+        </p>
+        <pre>user$ sudoedit /etc/hostname</pre>
+        <!-- hostname -F /etc/hostname -->
+	</div>
+      </div>
+      <h2>Hosts</h2>
+      <p>Om man byter hostname behöver man även justera de konfigurationsfiler som hänvisar till namnet.
+        Den mest välkända konfigurationsfilen, och många gånger en av få filer som behöver uppdateras, är "/etc/hosts"-filen.
+      </p>
+      <p>
+        Beroende på vad man har installerat kan man dock även behöva uppdatera hostname på andra platser.
+        Debians kommunitydrivna guide för att ändra hostname innehåller bland annat en lista över flera av dessa program: <a href="https://wiki.debian.org/Hostname#Rename_a_computer">https://wiki.debian.org/Hostname#Rename_a_computer</a>.
+      </p>
+      <div class="menubox">
+        <input type="radio" id="AlpineHostsLabel" name="Hosts" class="hidden-element" checked>
+        <label for="AlpineHostsLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianHostsLabel" name="Hosts" class="hidden-element">
+        <label for="DebianHostsLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESHostsLabel" name="Hosts" class="hidden-element">
+        <label for="SLESHostsLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELHostsLabel" name="Hosts" class="hidden-element">
+        <label for="RHELHostsLabel" class="default-padding">RHEL</label>
+        <div class="AlpineHosts hidden-element">
+          <p>Beroende på om man använder DHCP/SLAAC eller statiska adresser kommer innehållet skilja sig lite åt.
+            Oavsett vad som används så behöver du byta ut tidigare hostname med ditt nya.</p>
+          <pre>user$ doas nano /etc/hosts</pre>
+          <p>Om du använder dynamisk adressering och ditt hostname ska ändras till "linux" med FQDN "linux.home.arpa" bör filen se ut som nedan.
+            Notera att antalet mellanslag/tabb mellan IP-adresser och hostnames inte spelar någon roll.</p>
+          <pre>
+127.0.0.1       linux.home.arpa linux localhost.localdomain localhost
+::1             localhost localhost.localdomain</pre>
+          <!-- https://wiki.alpinelinux.org/wiki/Configure_Networking https://unix.stackexchange.com/questions/234412/whats-the-use-for-the-special-ipv6-addresses-in-etc-hosts
+            ::1             localhost ipv6-localhost ipv6-loopback
+            fe00::0         ipv6-localnet
+            ff00::0         ipv6-mcastprefix
+            ff02::1         ipv6-allnodes
+            ff02::2         ipv6-allrouters
+            ff02::3         ipv6-allhosts
+            -->
+        </div>
+        <div class="DebianHosts hidden-element">
+          <p>Beroende på om man använder DHCP/SLAAC eller statiska adresser kommer innehållet skilja sig lite åt.
+            Oavsett vad som används så behöver du byta ut tidigare hostname med ditt nya.</p>
+          <pre>user$ sudoedit /etc/hosts</pre>
+          <p>Om du använder dynamisk adressering och ditt hostname ska ändras till "linux" med FQDN "linux.home.arpa" bör filen se ut som nedan.
+          Notera att antalet mellanslag/tabb mellan IP-adresser och hostnames inte spelar någon roll.</p>
+          <pre>
+127.0.0.1       localhost
+127.0.1.1       linux.home.arpa linux
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters</pre>
+        </div>
+        <div class="SLESHosts hidden-element">
+          <p>Om DHCP/SLAAC används behöver hosts filen inte uppdateras,
+            med statisk adressering behöver man dock byta ut tidigare hostname med det nya.</p>
+          <pre>user$ sudoedit /etc/hosts</pre>
+          <p>Hosts filen bör se ut som nedan om man använder dynamisk adressering.
+            Notera att antalet mellanslag/tabb mellan IP-adresser och hostnames inte spelar någon roll.</p>
+          <pre>
+127.0.0.1       localhost
+::1             localhost ipv6-localhost ipv6-loopback
+fe00::0         ipv6-localnet
+ff00::0         ipv6-mcastprefix
+ff02::1         ipv6-allnodes
+ff02::2         ipv6-allrouters
+ff02::3         ipv6-allhosts</pre>
+        </div>
+        <div class="RHELHosts hidden-element">
+          <p>Om DHCP/SLAAC används behöver hosts filen inte uppdateras,
+            med statisk adressering behöver man dock byta ut tidigare hostname med det nya.</p>
+          <pre>user$ sudoedit /etc/hosts</pre>
+          <p>Hosts filen bör se ut som nedan om man använder dynamisk adressering.
+            Notera att antalet mellanslag/tabb mellan IP-adresser och hostnames inte spelar någon roll.</p>
+          <pre>
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</pre>
+        </div>
+      </div>
+      <h2>Applicera namnändringar</h2>
+      <p>När hostname har uppdaterats överallt behöver man starta om för att applicera namnändringen.</p>
+      <div class="menubox">
+        <input type="radio" id="AlpineRebootLabel" name="Reboot" class="hidden-element" checked>
+        <label for="AlpineRebootLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianRebootLabel" name="Reboot" class="hidden-element">
+        <label for="DebianRebootLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESRebootLabel" name="Reboot" class="hidden-element">
+        <label for="SLESRebootLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELRebootLabel" name="Reboot" class="hidden-element">
+        <label for="RHELRebootLabel" class="default-padding">RHEL</label>
+        <div class="AlpineReboot hidden-element">
+          <pre>user$ doas reboot</pre>
+        </div>
+        <div class="DebianReboot hidden-element">
+          <pre>user$ sudo systemctl reboot</pre>
+        </div>
+        <div class="SLESReboot hidden-element">
+          <pre>user$ sudo systemctl reboot</pre>
+        </div>
+        <div class="RHELReboot hidden-element">
+          <pre>user$ sudo systemctl reboot</pre>
+        </div>
+      </div>
+      <p>Efter omstarten kontrollera att hostname med FQDN applicerades korrekt.</p>
+      <pre>user$ hostname -f</pre>
+    </div>
+  </body>
+</html>

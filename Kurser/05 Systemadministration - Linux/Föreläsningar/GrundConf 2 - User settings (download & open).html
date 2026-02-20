@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <title>2. User Settings</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style>
+      h1 {
+        text-align: center;
+      }
+      body {
+        font-family: Open Sans, sans-serif;
+      }
+      pre {
+        font-family: DejaVu Sans Mono, monospace;
+        font-size: 16px;
+        white-space: pre;
+        display: block;
+        overflow-x: auto;
+        padding: 1em;
+        background: #F3F3F3;
+        color: #454545;
+      }
+      #AlpineSettingsLabel:checked ~ .AlpineSettings,
+      #DebianSettingsLabel:checked ~ .DebianSettings,
+      #RHELSettingsLabel:checked ~ .RHELSettings,
+      #SLESSettingsLabel:checked ~ .SLESSettings {
+        display: block;
+      }
+      #AlpineRootLabel:checked ~ .AlpineRoot,
+      #DebianRootLabel:checked ~ .DebianRoot,
+      #RHELRootLabel:checked ~ .RHELRoot,
+      #SLESRootLabel:checked ~ .SLESRoot {
+        display: block;
+      }
+      #AlpineDisableLabel:checked ~ .AlpineDisable,
+      #DebianDisableLabel:checked ~ .DebianDisable,
+      #RHELDisableLabel:checked ~ .RHELDisable,
+      #SLESDisableLabel:checked ~ .SLESDisable {
+        display: block;
+      }
+      input:checked + label {
+        font-weight: bold;
+        background-color: #E4E4E4;
+      }
+      label:hover {
+        background-color: #EEEEEE;
+      }
+      .default-padding {
+        padding: 0.4em;
+        cursor: pointer;
+      }
+      .hidden-element {
+        display: none;
+      }
+      .menubox {
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-top: 26px;
+        margin-bottom: 26px;
+        padding: 20px;
+        box-shadow:  0 0 5px 3px #D0D0D0;
+        border-radius: 6px;
+      }
+      .mainbox {
+        max-width: 900px;
+        margin: auto;
+        padding-bottom: 50px;
+      }
+      summary {
+        list-style: none;
+        border: 2px solid #000000;
+        padding: .75em 1em;
+        cursor: pointer;
+        position: relative;
+        padding-left: 3rem;
+        }
+      summary:before {
+        content: "↓";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: .75rem;
+        width: 1.75rem;
+        height: 1.75rem;
+        background-color: #000000;
+        color: #F0F0F0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+      details[open] summary {
+        background-color: #E4E4E4;
+      }
+      details[open] summary:before {
+        content: "↑";
+      }
+      summary:hover {
+        background-color: #EEEEEE;
+      }
+      details div {
+        border-left: 2px solid #000;
+        border-right: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 0.1em 1em 0.1em;
+        margin: 0px 10px 0px;
+      }
+      details + details {
+        margin-top: .5rem;
+      }
+      .end {
+        padding-bottom: 100px
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainbox">
+      <h1>Grundkonfiguration i Linux </h1>
+      <p>Instruktionerna guidar dig igenom hur man konfigurerar vanliga användarinställningar och tildelar högre behörighet åt en användare.</p>
+      <p>Observera att instruktionerna antar att du kan ansluta med SSH och logga in som root med hjälp utav substitute user.
+      Det vill säga att du har genomfört del 1 av guiden.</p>
+      <h1>2. Användarinställningar</h1>
+      <h2>Användarinställningar</h2>
+      <p>I Linux sparas användarinställningar som environment variables.
+        Dessa variabler kan antingen hanteras gemensamt för alla lokala användare, i filen "/etc/profile",
+        eller per användare, i filen "~/.profile".</p>
+      <div class="menubox">
+	<p>Ställ in en standard textredigerare och pager. Börja med att öppna "/etc/profile".</p>
+	<pre>root# nano /etc/profile</pre>
+	<p>Ange nano och less som standard textredigerare och pager respektive.
+	  Placera konfigurationsraderna högst upp i filen innan if-blocken.</p>
+	<pre>
+export EDITOR=nano
+export PAGER=less</pre>
+        <p>Logga ut och logga in igen för att applicera inställningarna.</p>
+      </div>
+      <h2>Root-behörighet</h2>
+      <p>Redan under 60-talets utveckligen av TENEX såg man ett behov av att ge vanliga användare utökade rättigheter.
+        Lösningen var något som kallades för wheel.
+        TENEX lösning påverkade UNIX och det arvet syns fortfarande i flera BSD- och Linux-distributioner.
+        Konventionellt används därför gruppen "wheel" för att ge användare rättighet att köra kommandon som root.
+        Det förekommer dock även att andra grupper används.</p>
+      <p>Observera att exempeln nedan antar din användare heter "nics".</p>
+      <div class="menubox">
+        <input type="radio" id="AlpineRootLabel" name="Root" class="hidden-element" checked>
+        <label for="AlpineRootLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianRootLabel" name="Root" class="hidden-element">
+        <label for="DebianRootLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESRootLabel" name="Root" class="hidden-element">
+        <label for="SLESRootLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELRootLabel" name="Root" class="hidden-element">
+        <label for="RHELRootLabel" class="default-padding">RHEL</label>
+        <div class="AlpineRoot hidden-element">
+	  <p>Alpine använder programmet "doas" för att ge vanliga användare möjligheten att köra kommandon som root (motsvarar ungefär Windows "Run as Administrator").
+	    Installera doas och lägg till din användare i gruppen "wheel".</p>
+	  <pre>
+root# apk add doas
+root# adduser nics wheel
+root# nano /etc/doas.d/doas.conf</pre>
+	  <p>Öppna konfigurationsfilen och lägg till nedan konfigurationsrad.</p>
+	  <pre>permit persist keepenv :wheel</pre>
+	</div>
+        <div class="DebianRoot hidden-element">
+	  <p>Debian använder programmet "sudo" för att ge vanliga användare möjligheten att köra kommandon som root (motsvarar ungefär Windows "Run as Administrator").
+	    Installera sudo och lägg till din användare i gruppen "sudo".</p>
+	  <pre>
+root# apt install sudo
+root# usermod -aG sudo nics
+root# visudo</pre>
+	  <p>Inställning för sudo finns i filen "/etc/sudoers".
+	    Var dock observant när du editerar filen då minsta syntaxfel leder till att sudo slutar fungera.
+	    I en riktig driftsatt miljö får sådana misstag stora konsekvenser.
+	    Filen "/etc/sudoers" bör därför alltid editeras med kommandot "visudo".
+	    Kommandot öppnar "/etc/sudoers" med din standard textredigerare (som defineras av environment variablen "$EDITOR") och kontrollerar att inga syntaxfel har gjorts innan filen sparas.</p>
+	  <p>Öppna konfigurationsfilen med kommandot "visudo" och se till att nedan konfigurationsrad finns.
+            Notera att antalet mellanslag/tabb inte spelar någon roll.</p>
+	  <pre>%sudo	ALL=(ALL:ALL) ALL</pre>
+	</div>
+        <div class="SLESRoot hidden-element">
+	  <p>SUSE använder programmet "sudo" för att ge vanliga användare möjligheten att köra kommandon som root (motsvarar ungefär Windows "Run as Administrator").
+	    Lägg till din användare i gruppen "wheel".</p>
+	  <pre>
+root# usermod -aG wheel nics
+root# visudo</pre>
+	  <p>Inställning för sudo finns i filen "/etc/sudoers".
+	    Var dock observant när du editerar filen då minsta syntaxfel leder till att sudo slutar fungera.
+	    I en riktig driftsatt miljö får sådana misstag stora konsekvenser.
+	    Filen "/etc/sudoers" bör därför alltid editeras med kommandot "visudo".
+	    Kommandot öppnar "/etc/sudoers" med din standard textredigerare (som defineras av environment variablen "$EDITOR") och kontrollerar att inga syntaxfel har gjorts innan filen sparas.</p>
+	  <p>Öppna konfigurationsfilen med kommandot "visudo",
+            se till att kommentera (placera en "#" framför) och avkommentera (ta bort inledande "#") precis som konfigurationsutdraget nedan visar.
+            Notera att antalet mellanslag/tabb inte spelar någon roll.</p>
+	  <pre>
+#Default targetpw
+#ALL	ALL=(ALL) ALL
+
+## Uncomment to allow members of group wheel to execute any command
+%wheel ALL=(ALL:ALL) ALL</pre>
+	</div>
+        <div class="RHELRoot hidden-element">
+	  <p>RHEL använder programmet "sudo" för att ge vanliga användare möjligheten att köra kommandon som root (motsvarar ungefär Windows "Run as Administrator").
+	    Lägg till din användare i gruppen "wheel".</p>
+	  <pre>
+root# usermod -aG wheel nics
+root# visudo</pre>
+	  <p>Inställning för sudo finns i filen "/etc/sudoers".
+	    Var dock observant när du editerar filen då minsta syntaxfel leder till att sudo slutar fungera.
+	    I en riktig driftsatt miljö får sådana misstag stora konsekvenser.
+	    Filen "/etc/sudoers" bör därför alltid editeras med kommandot "visudo".
+	    Kommandot öppnar "/etc/sudoers" med din standard textredigerare (som defineras av environment variablen "$EDITOR") och kontrollerar att inga syntaxfel har gjorts innan filen sparas.</p>
+	  <p>Öppna konfigurationsfilen med kommandot "visudo" och se till att nedan konfigurationsrad finns.
+	  Notera att antalet mellanslag/tabb inte spelar någon roll.</p>
+	  <pre>%wheel	ALL=(ALL) ALL</pre>
+	</div>
+      </div>
+
+      <h2>Disable root</h2>
+      <p>Eftersom du nu har en användare som kan köra kommandon som root (genom att lägga till "sudo" eller "doas" framför kommandot) behövs inte root-kontot längre.
+        Root-användaren är en populär måltavla för attacker och det är därför ofta lämpligt att stänga av root-kontot när man har konfigurerat doas/sudo.
+        I det här fallet görs det inte enbart av säkerhetsskäl utan också på grund utav pedagogiskaskäl.</p>
+      <p>Logga in som din användare och kontrollera att doas/sudo fungerar innan du stänger av root-kontot.
+        Observera att doas/sudo frågar efter din användares lösenord och inte lösenordet till root-kontot</p>
+      <pre>
+whoami
+sudo whoami
+doas whoami</pre>
+      <div class="menubox">
+        <input type="radio" id="AlpineDisableLabel" name="Disable" class="hidden-element" checked>
+        <label for="AlpineDisableLabel" class="default-padding">Alpine</label>
+        <input type="radio" id="DebianDisableLabel" name="Disable" class="hidden-element">
+        <label for="DebianDisableLabel" class="default-padding">Debian</label>
+        <input type="radio" id="SLESDisableLabel" name="Disable" class="hidden-element">
+        <label for="SLESDisableLabel" class="default-padding">openSUSE</label>
+        <input type="radio" id="RHELDisableLabel" name="Disable" class="hidden-element">
+        <label for="RHELDisableLabel" class="default-padding">RHEL</label>
+        <div class="AlpineDisable hidden-element">
+          <p>Användare definieras i filen "/etc/passwd", bland annat lagras även information om användarens hemkatalog och skal.
+            Precis som filnamnet antyder användes filen en gång i tiden även för lösenord,
+	    numera finns dock ingen känslig information i filen.
+            Lösenord lagras istället i filen "/etc/shadow".</p>
+          <p>För att hindra användning av root-kontot ska du använda nedan kommandon.
+            Det blockerar användning av lösenord och visar en varning vid inloggningsförsök</p>
+          <pre>
+user$ doas sed -i 's/^root:/root:!/' /etc/shadow
+user$ doas sed -i 's$root:x:0:0:root:/root:/bin/ash$root:x:0:0:root:/root:/sbin/nologin$' /etc/passwd</pre>
+        </div>
+        <div class="DebianDisable hidden-element">
+          <p>Debian kommer med ett par verktyg för att editera "/etc/passwd"- och "/etc/shadow"-filerna.
+            Verktygen underlättar användarhantering då man slipper editera flera olika filer.
+            Det minskar även risken för fel då filerna är ytterst känsliga.
+            Vid minsta syntaxfel kan man lätt råka göra så att användaren inte längre kan logga in.
+            Så länge man har bättre alternativ bör man med andra ord aldrig editera dessa filer manuellt.</p>
+	  <p>Använd nedan kommando för att hindra användare från att logga in som root.</p>
+          <pre>user$ sudo usermod -L root -s /sbin/nologin</pre>
+	  <p>Öppna manualen och kontrollera vad flaggorna ovan betyder. Avsluta sedan manualen med "q".</p>
+          <pre>
+user$ man usermod
+user$ man nologin</pre>
+        </div>
+        <div class="SLESDisable hidden-element">
+          <p>SUSE kommer med ett par verktyg för att editera "/etc/passwd"- och "/etc/shadow"-filerna.
+            Verktygen underlättar användarhantering då man slipper editera flera olika filer.
+            Det minskar även risken för fel då filerna är ytterst känsliga.
+            Vid minsta syntaxfel kan man lätt råka göra så att användaren inte längre kan logga in.
+            Så länge man har bättre alternativ bör man med andra ord aldrig editera dessa filer manuellt.</p>
+	  <p>Använd nedan kommando för att hindra användare från att logga in som root.</p>
+          <pre>user$ sudo usermod -L root -s /sbin/nologin</pre>
+	  <p>Öppna manualen och kontrollera vad flaggorna ovan betyder. Avsluta sedan manualen med "q".</p>
+          <pre>
+user$ man usermod
+user$ man nologin</pre>
+        </div>
+        <div class="RHELDisable hidden-element">
+          <p>RHEL kommer med ett par verktyg för att editera "/etc/passwd"- och "/etc/shadow"-filerna.
+            Verktygen underlättar användarhantering då man slipper editera flera olika filer.
+            Det minskar även risken för fel då filerna är ytterst känsliga.
+            Vid minsta syntaxfel kan man lätt råka göra så att användaren inte längre kan logga in.
+            Så länge man har bättre alternativ bör man med andra ord aldrig editera dessa filer manuellt.</p>
+	  <p>Använd nedan kommando för att hindra användare från att logga in som root.</p>
+          <pre>user$ sudo usermod -L root -s /sbin/nologin</pre>
+	  <p>Öppna manualen och kontrollera vad flaggorna ovan betyder. Avsluta sedan manualen med "q".</p>
+          <pre>
+user$ man usermod
+user$ man nologin</pre>
+        </div>
+      </div>
+      <p>Användarkontot är dock inte helt avstängt,
+        för att helt hindra att det används hade vi även behövt ställa in ett passerat "expire date".
+        Men i och med att root-kontot används för att bland annat köra bakgrundsprocesser och schemalaggdajobb så är det inte önskvärt.
+        Istället blockerar vi enbart interaktiva inloggningar.</p>
+    </div>
+  </body>
+</html>
