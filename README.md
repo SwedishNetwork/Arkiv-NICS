@@ -1,5 +1,3 @@
-# Introduktion
-
 Detta är en omfattande sammanställning av material från högskoleutbildningen **Nätverk, Infrastruktur & Cybersäkerhet (NICS)**. Närmare bestämt en 3-årig utbildningsperiod på lärosätet Jönköping University, startår 2023 (Klass DD23). 
 <br><br>
 
