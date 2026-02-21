@@ -65,4 +65,4 @@ VT 2026:
 - Ej genomgått denna utbildningsdel vid nuvarande skrivtilfälle<br><br>
 
 
-![dd23-logga](https://github.com/user-attachments/assets/452d8430-7c80-458d-b4a1-035969cac93e)
+
