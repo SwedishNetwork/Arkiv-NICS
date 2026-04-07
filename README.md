@@ -62,7 +62,9 @@ HT 2025:
 - ✅ IT-arkitektur och IT Service Management (ITSM)
 
 VT 2026: 
-- Ej genomgått denna utbildningsdel vid nuvarande skrivtilfälle<br><br>
+- ✅ Projekt i NICS
+- ✅ Databaser
+- ✅ Examensarbete?<br><br>
 
 
 
