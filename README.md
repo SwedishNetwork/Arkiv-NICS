@@ -61,7 +61,7 @@ HT 2025:
 - 🚫 Trender i NICS
 - ✅ IT-arkitektur och IT Service Management (ITSM)
 
-VT 2026: 
+VT 2026: (Ej inkluderade i skrivande stund)
 - ✅ Projekt i NICS
 - ✅ Databaser
 - ✅ Examensarbete?<br><br>
