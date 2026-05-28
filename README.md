@@ -16,6 +16,7 @@ Den kursvisa uppdelningen täcker en blandning av nedanstående punkter:
 - Kurslitteratur
 - Praktiska Prov
 - Workshops
+- Cheat Sheets
 <br><br>
 
 > [!NOTE]
