@@ -20,7 +20,7 @@ Den kursvisa uppdelningen täcker en blandning av nedanstående punkter:
 > [!NOTE]
 > Utbildningens alla föreläsningar samlade i en PDF möjliggör uppslag med **```Ctrl + F```** för att snabbt hitta information.
 
-> Information förekommer både på svenska och engelska.  
+> Information förekommer på både svenska och engelska.  
 > Information kan vara utdaterad.
 
 ## Utbildningens kurser 
@@ -57,14 +57,14 @@ VT 2025:
 
 HT 2025: 
 - 🚫 Projektledning och metoder
-- 🚫 Individuellt kursval
+- 🚫 (Individuellt kursval)
 - 🚫 Trender i NICS
 - ✅ IT-arkitektur och IT Service Management (ITSM)
 
-VT 2026: (Ej inkluderade i skrivande stund)
-- ✅ Projekt i NICS
+VT 2026:
+- 🚫 Projekt i NICS
 - ✅ Databaser
-- ✅ Examensarbete?<br><br>
+- 🚫 Examensarbete<br><br>
 
 
 
