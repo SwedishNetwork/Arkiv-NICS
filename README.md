@@ -15,6 +15,7 @@ Den kursvisa uppdelningen täcker en blandning av nedanstående punkter:
 - Laborationer
 - Kurslitteratur
 - Praktiska Prov
+- Workshops
 <br><br>
 
 > [!NOTE]
