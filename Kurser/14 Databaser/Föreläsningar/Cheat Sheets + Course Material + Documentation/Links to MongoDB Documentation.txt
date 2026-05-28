@@ -1,0 +1,6 @@
+Query: 
+https://www.mongodb.com/docs/manual/tutorial/query-documents/
+
+
+Aggregation: 
+https://www.mongodb.com/docs/manual/aggregation/
