@@ -40,7 +40,7 @@ VT 2024:
 - ✅ Systemadministration - Linux
 - 🚫 Ekonomi och entreprenörskap
 - ✅ Systemadministration - Windows
-- ✅ Nätverksdesign - WAN och operatörsnät
+- ✅ Nätverksdesign - WAN och operatörsnät<br><br>
 
 ### Årskurs 2:
 
@@ -53,7 +53,7 @@ HT 2024:
 VT 2025:
 - 🚫 Forskningsmetoder i datateknik och informatik
 - ✅ Cybersäkerhet
-- 🚫 NFK - Näringslivsförlagd kurs inom NICS
+- 🚫 NFK - Näringslivsförlagd kurs inom NICS<br><br>
 
 ### Årskurs 3:
 
