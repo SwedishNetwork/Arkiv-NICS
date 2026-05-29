@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Persons</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Persons</h1>
+    <form id="personForm" method="post" onsubmit="event.preventDefault(); newPerson();">
+        <input type="text" name="fn" id="fname" placeholder="First Name">
+        <input type="text" name="ln" id="lname" placeholder="Last Name">
+        <input type="email" name="em" id="email" placeholder="Email">
+        <input type="date" name="bdate" id="birthdate" placeholder="Birthdate">
+        <button type="submit">Add Person</button>
+    </form>
+
+    <p>
+        <button onclick="getperson()">Refresh </button>
+    </p>
+    
+    <table>
+        <thead>
+            <tr><th>ID</th><th>First</th><th>Last</th><th>Email</th><th>Birthdate</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+    <script>
+        fetch('/api/persons')
+            .then(r => r.json())
+            .then(rows => {
+                console.log("---> Fetching persons...");
+                document.getElementById('tbody').innerHTML = rows.map(p => 
+                    `<tr>
+                        <td>${p.pid}</td>
+                        <td>${p.pfirstname}</td>
+                        <td>${p.plastname}</td>
+                        <td>${p.pemail}</td>
+                        <td>${p.pbirthdate.slice(0,10)}</td>
+                        <td>
+                            <button onclick="deletePerson(${p.pid})">Delete</button>
+                            <button onclick="updatePerson(${p.pid})">Update</button>
+                        </td>
+                    </tr>`
+                ).join('');
+            });
+            function getperson() {
+                fetch('/api/persons')
+            .then(r => r.json())
+            .then(rows => {
+                console.log("---> Fetching persons...");
+                document.getElementById('tbody').innerHTML = rows.map(p => 
+                    `<tr>
+                        <td>${p.pid}</td>
+                        <td>${p.pfirstname}</td>
+                        <td>${p.plastname}</td>
+                        <td>${p.pemail}</td>
+                        <td>${p.pbirthdate.slice(0,10)}</td>
+                        <td>
+                            <button onclick="deletePerson(${p.pid})">Delete</button>
+                            <button onclick="updatePerson(${p.pid})">Update</button>
+                        </td>
+                    </tr>`
+                ).join('');
+            });
+            }
+        function deletePerson(pid) {
+    fetch(`/api/persons/${pid}`, { method: 'DELETE' })
+        .then(() => { console.log("---> Deleting person..."); location.reload(); });
+}
+
+function updatePerson(pid) {
+    console.log("---> Updating person with ID: ", pid);
+    const fname = document.getElementById('fname').value;
+    const lname = document.getElementById('lname').value;
+    const email = document.getElementById('email').value;
+    const birthdate = document.getElementById('birthdate').value;
+    
+    if (fname && lname && email && birthdate) {
+        fetch(`/api/persons/${pid}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pfirstname: fname, plastname: lname, pemail: email, pbirthdate: birthdate })
+        }).then(() => { console.log("---> Updating person..."); location.reload(); });
+    }
+}
+
+function newPerson() {
+    console.log("---> Creating new person...");
+    const fname = document.getElementById('fname').value;
+    const lname = document.getElementById('lname').value;
+    const email = document.getElementById('email').value;
+    const birthdate = document.getElementById('birthdate').value;
+    
+    if (fname && lname && email && birthdate) {
+        fetch('/api/persons', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fn: fname, ln: lname, em: email, bdate: birthdate })
+        }).then(() => { console.log("---> Creating new person..."); location.reload(); });
+    }
+}
+</script>
+</body>
+</html>
